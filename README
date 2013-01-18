@@ -1,0 +1,24 @@
+Gtimelog analyzer
+=================
+
+ App which analyze your timelogs and emails you the statistics at the end of
+ every week. For this to work, we make a few assumptions:
+
+  1. The first word /[a-zA-Z-_]/ is treated as the project, e.g. `gl gocms`
+     implies that gocms is the name of your project
+
+  2. The second word /[a-zA-Z-_]/ is treated as the task in that project.
+     e.g. `gl learn code-reading` implies a subproject of code-reading
+
+  3. A task with two stars '**' or two colons '::' is considered to be a non
+     work task. These tasks too can have a project and subproject.
+     e.g. `gl break lunch`
+
+  4. A task with '+' parses the projects between '+'
+     e.g. `gl break + sleep` assigns the time to both the projects?
+     Try to avoid these
+
+  5. You are assumed to log *after* the task is finished, i.e. if you have spent
+
+
+ 1. Email the amount
