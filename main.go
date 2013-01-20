@@ -21,11 +21,12 @@ const (
 
 func main() {
 	var report = flag.String("report", "none", "Type of report you want to generate, options are full, projects ..")
+	var lineCount = flag.Int64("lines", 10, "Prints the last n logs")
 	flag.Parse()
 	//if report is none it means we are logging a task
 	switch {
 	case len(os.Args) == 1:
-		printLatestLogs()
+		printLatestLogs(*lineCount)
 	case *report == "none":
 		logTask()
 	default:
@@ -55,9 +56,7 @@ func generateReport(reportType string) {
 //this code tries to get the last n lines from the file
 //it is accurate most of the times, sometimes it might not
 //be able to get n lines if the line size is large, in these
-func printLatestLogs() {
-	//TODO: take this from the flags
-	var lineCount int64 = 10
+func printLatestLogs(lineCount int64) {
 	fd, err := os.Open("/home/minhajuddin/.gtimelog/timelog.txt")
 	if err != nil {
 		log.Fatal("Failed to open the timelog file for reading: ", TIMELOG_FILE, err)
@@ -68,11 +67,11 @@ func printLatestLogs() {
 	lines := strings.Split(string(bytes), "\n")
 	//we want to skip the first line as it might be read from the middle
 	lines = lines[1:]
-	//TODO: pass it through a filter which shows the actual time spent on the tasks
 	lindex := int64(len(lines)) - lineCount - 2
 	printSummary(lines[lindex:])
 }
 
 func printSummary(logs []string) {
+	//TODO: make this a filter which shows the actual time spent on the tasks
 	fmt.Println(strings.Join(logs, "\n"))
 }
