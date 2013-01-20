@@ -56,7 +56,7 @@ func generateReport(reportType string) {
 //it is accurate most of the times, sometimes it might not
 //be able to get n lines if the line size is large, in these
 func printLatestLogs(lineCount int64) {
-	fd, err := os.Open("/home/minhajuddin/.gtimelog/timelog.txt")
+	fd, err := os.Open(TIMELOG_FILE)
 	if err != nil {
 		log.Fatal("Failed to open the timelog file for reading: ", TIMELOG_FILE, err)
 	}
