@@ -65,3 +65,11 @@ Timelogger
       Learn   | 8.3
       Break   | 3
 
+## Misc
+ Add helpers from my gl bash function
+  - Helper to show the last few tasks and their hours
+     `tail $gtimelog` 
+  - Helper to extend last logged task: 
+     `echo "$(date "+%Y-%m-%d %H:%M"): $(tail -1 $gtimelog | sed -e 's/^[0-9 :-]*//g')" >> $gtimelog`
+  - Helper to allow editing of the timelog file
+     `vi $gtimelog`
