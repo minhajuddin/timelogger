@@ -1,10 +1,21 @@
-Gtimelog analyzer
-=================
+Timelogger
+==========
 
- App which analyze your timelogs and emails you the statistics at the end of
- every week. For this to work, we make a few assumptions:
+## Logger
 
-  1. The first word /[a-zA-Z-_]/ is treated as the project, e.g. `gl gocms`
+  1. You can log a task simply by running `timelogger task description .....`
+
+
+## Watcher
+  1. Allows you to hook up a cron task which sends an email with all the
+     analysis
+
+## Analyzer
+
+ Analyzes your timelogs and emails you the statistics at the end of
+ every week/work. For this to work, we make a few assumptions:
+
+  1. The first word /[a-zA-Z-_]/ is treated as the project name, e.g. `gl gocms`
      implies that gocms is the name of your project
 
   2. The second word /[a-zA-Z-_]/ is treated as the task in that project.
@@ -18,7 +29,39 @@ Gtimelog analyzer
      e.g. `gl break + sleep` assigns the time to both the projects?
      Try to avoid these
 
-  5. You are assumed to log *after* the task is finished, i.e. if you have spent
+  5. You are assumed to log *after* the task is finished, i.e. once you have
+     spent time working on something. e.g. At the end of working on a coding
+     session on timelogger you would run `gl timelogger dev`
 
+## Statistics / Analyses
+  1. Projects, dates and hours
 
- 1. Email the amount
+      Project | Time spent in hours | Date
+      TL      | 8.33                | 2012-10-23
+      TL      | 6.33                | 2012-10-24
+      Learn   | 8.3                 | 2012-10-24
+      Break   | 3                   | 2012-10-25
+
+  2. Projects, tasks, hours and dates
+      
+      Project | Task         | Time spent in hours | Date
+      TL      | dev          | 5.33                | 2012-10-23
+      TL      | dev          | 3.33                | 2012-10-24
+      TL      | design       | 3.33                | 2012-10-24
+      Learn   | code-reading | 8.3                 | 2012-10-25
+
+  3. Projects, tasks and hours
+
+      Project | Task         | Time spent in hours
+      TL      | dev          | 10.33
+      TL      | design       | 3.33
+      Learn   | code-reading | 8.3
+      Break   | lunch        | 3
+
+  4. Projects and hours
+
+      Project | Time spent in hours
+      TL      | 13.33
+      Learn   | 8.3
+      Break   | 3
+
