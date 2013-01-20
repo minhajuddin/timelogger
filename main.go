@@ -12,7 +12,7 @@ import (
 )
 
 var (
-	TIMELOG_FILE = path.Join(os.Getenv("HOME"), "timelog.txt")
+	TIMELOG_FILE = path.Join(os.Getenv("HOME"), ".timelog.txt")
 )
 
 const (
@@ -21,11 +21,11 @@ const (
 
 func main() {
 	var report = flag.String("report", "none", "Type of report you want to generate, options are full, projects ..")
-	var lineCount = flag.Int64("lines", 10, "Prints the last n logs")
+	var lineCount = flag.Int64("lines", -1, "Prints the last n logs, prints 10 lines by default")
 	flag.Parse()
 	//if report is none it means we are logging a task
 	switch {
-	case len(os.Args) == 1:
+	case len(os.Args) == 1 || *lineCount != -1:
 		printLatestLogs(*lineCount)
 	case *report == "none":
 		logTask()
@@ -37,15 +37,14 @@ func main() {
 func logTask() {
 	logFile, err := os.OpenFile(TIMELOG_FILE, os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0600)
 	if err != nil {
-		fmt.Println("Unable to open timelog file:", err)
-		return
+		log.Fatal("Unable to open timelog file:", err)
 	}
 	defer logFile.Close()
 
 	op := time.Now().Format("2006-01-02 15:04: ") + strings.Join(os.Args[1:], " ") + "\n"
 	_, err = logFile.WriteString(op)
 	if err != nil {
-		fmt.Println("Failed to write:", err)
+		log.Fatal("Failed to write:", err)
 	}
 }
 
@@ -60,6 +59,11 @@ func printLatestLogs(lineCount int64) {
 	fd, err := os.Open("/home/minhajuddin/.gtimelog/timelog.txt")
 	if err != nil {
 		log.Fatal("Failed to open the timelog file for reading: ", TIMELOG_FILE, err)
+	}
+
+	//this is when no option is when 
+	if lineCount == -1 {
+		lineCount = 10
 	}
 
 	_, _ = fd.Seek(-(AVG_LINE_LENGTH * lineCount), 2)

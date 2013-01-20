@@ -69,3 +69,9 @@ Timelogger
  Add helpers from my gl bash function
   - Helper to extend last logged task: 
      `echo "$(date "+%Y-%m-%d %H:%M"): $(tail -1 $gtimelog | sed -e 's/^[0-9 :-]*//g')" >> $gtimelog`
+
+## Syncing across computers
+ Use Dropbox to sync this file across multiple computers
+    
+    $ touch $HOME/Dropbox/timelog.txt
+    $ ln -s $HOME/Dropbox/timelog.txt $HOME/.timelog.txt
