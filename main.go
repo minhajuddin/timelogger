@@ -72,6 +72,10 @@ func printLatestLogs(lineCount int64) {
 	//we want to skip the first line as it might be read from the middle
 	lines = lines[1:]
 	lindex := int64(len(lines)) - lineCount - 2
+	//if we have less lines than the lineCount, show all the lines
+	if lindex < 0 {
+		lindex = 0
+	}
 	printSummary(lines[lindex:])
 }
 
