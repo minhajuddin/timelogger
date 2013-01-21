@@ -79,7 +79,72 @@ func printLatestLogs(lineCount int64) {
 	printSummary(lines[lindex:])
 }
 
-func printSummary(logs []string) {
+//TODO: change refs to pointers if it makes sense
+type Log struct {
+	Text    string
+	Start   time.Time
+	End     time.Time
+	Project string
+	Task    string
+	Subtask string
+}
+
+func (self *Log) Duration() time.Duration {
+	return self.End.Sub(self.Start)
+}
+
+func (self *Log) String() string {
+	return fmt.Sprintf("%v : %s > %s > %s", self.Duration(), self.Project, self.Task, self.Subtask)
+}
+
+//"2013-01-18 15:24: learn code-reading gostatic"
+func parseLine(line string) *Log {
+	tokens := strings.Split(line, ": ")
+	timeToken := tokens[0]
+	projectToken := tokens[1]
+	projectTokens := strings.Fields(projectToken)
+
+	var project, task, subtask string
+
+	if len(projectTokens) > 2 {
+		subtask = strings.Join(projectTokens[2:], " ")
+	}
+	if len(projectTokens) > 1 {
+		task = projectTokens[1]
+	}
+	if len(projectTokens) > 0 {
+		project = projectTokens[0]
+	}
+	t, _ := time.Parse("2006-01-02 15:04", timeToken)
+	return &Log{
+		Text:    projectToken,
+		End:     t,
+		Project: project,
+		Task:    task,
+		Subtask: subtask,
+	}
+}
+
+func parseLines(lines []string) []*Log {
+	logs := make([]*Log, 0, 10)
+	//first pass, parse the end times
+	for i := 0; i < len(lines); i++ {
+		if len(lines[i]) > 0 {
+			logs = append(logs, parseLine(lines[i]))
+		}
+	}
+	//second pass, compute the durations
+	for i := 1; i < len(logs); i++ {
+		logs[i].Start = logs[i-1].End
+	}
+	//cannot compute the summary for the first log entry
+	return logs[1:]
+}
+
+func printSummary(lines []string) {
 	//TODO: make this a filter which shows the actual time spent on the tasks
-	fmt.Println(strings.Join(logs, "\n"))
+	logs := parseLines(lines)
+	for _, log := range logs {
+		fmt.Println(log.String())
+	}
 }
