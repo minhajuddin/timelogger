@@ -94,7 +94,7 @@ func (self *Log) Duration() time.Duration {
 }
 
 func (self *Log) String() string {
-	return fmt.Sprintf("%v : %s > %s > %s", self.Duration(), self.Project, self.Task, self.Subtask)
+	return fmt.Sprintf("\t%5.2f - %s", self.Duration().Hours(), self.Text)
 }
 
 //"2013-01-18 15:24: learn code-reading gostatic"
