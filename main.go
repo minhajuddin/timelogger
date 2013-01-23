@@ -41,7 +41,10 @@ func logTask() {
 	}
 	defer logFile.Close()
 
-	op := time.Now().Format("2006-01-02 15:04: ") + strings.Join(os.Args[1:], " ") + "\n"
+	msg := strings.Join(os.Args[1:], " ")
+	//this is to stay consistent with the gtimelog format
+	msg = strings.Replace(msg, "::", "**", 1)
+	op := time.Now().Format("2006-01-02 15:04: ") + msg + "\n"
 	_, err = logFile.WriteString(op)
 	if err != nil {
 		log.Fatal("Failed to write:", err)

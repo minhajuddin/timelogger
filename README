@@ -65,10 +65,30 @@ Timelogger
       Learn   | 8.3
       Break   | 3
 
+## Filter
+  We need to be able to filter the output by:
+  
+    1. Number of lines/or number of tasks
+    2. Date
+    3. Task regexp
+    4. Project/Task/Subtask
+
+  We should be able to combine these filters. We should also be able to select 
+  the output independently
+  
+
 ## Misc
- Add helpers from my gl bash function
+  Add helpers from my gl bash function
   - Helper to extend last logged task: 
      `echo "$(date "+%Y-%m-%d %H:%M"): $(tail -1 $gtimelog | sed -e 's/^[0-9 :-]*//g')" >> $gtimelog`
+
+## Bash helpers
+  You can add these in your ~/.bashrc to help with logging
+
+  #shortcut to timelogger
+  alias tl='timelogger'
+  #to allow editing of your log file from your editor
+  alias tle='vi ~/.timelog.txt'
 
 ## Syncing across computers
  Use Dropbox to sync this file across multiple computers
