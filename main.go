@@ -21,7 +21,7 @@ const (
 
 func main() {
 	var report = flag.String("report", "none", "Type of report you want to generate, options are full, projects ..")
-	var days = flag.Int64("d", -1, "Prints the logs for the last n days")
+	var days = flag.Int("d", -1, "Prints the logs for the last n days")
 	var lineCount = flag.Int64("n", -1, "Prints the last n logs, prints 10 lines by default")
 	flag.Parse()
 	//if report is none it means we are logging a task
@@ -58,8 +58,21 @@ func generateReport(reportType string) {
 	fmt.Println("Generating report:", reportType)
 }
 
-func printLogsForDays(days int64) {
-	printLatestLogs(days * MAX_LOGS_PER_DAY)
+func filterLogs(logs []*Log, predicate func(*Log) bool) []*Log {
+	oplogs := make([]*Log, 0, len(logs))
+	for _, l := range logs {
+		if predicate(l) {
+			oplogs = append(oplogs, l)
+		}
+	}
+	return oplogs
+}
+func printLogsForDays(days int) {
+	tillDate := time.Now().AddDate(0, 0, -1*days)
+	tillDate = roundOffToDate(tillDate)
+	logs := readLatestLogs(int64(days) * MAX_LOGS_PER_DAY)
+	logs = filterLogs(logs, func(l *Log) bool { return l.End.After(tillDate) })
+	printSummary(logs)
 }
 
 func printLatestLogs(n int64) {
@@ -81,4 +94,10 @@ func printSummary(logs []*Log) {
 	for _, log := range logs {
 		fmt.Println(log.String())
 	}
+}
+
+func roundOffToDate(t time.Time) time.Time {
+	dateString := "20060102"
+	t, _ = time.Parse(dateString, t.Format(dateString))
+	return t
 }

@@ -24,7 +24,7 @@ func (self *Log) Duration() time.Duration {
 }
 
 func (self *Log) String() string {
-	return fmt.Sprintf("\t%5.2f - %s", self.Duration().Hours(), self.Text)
+	return fmt.Sprintf("\t%s\t%5.2f - %s", self.Start.Format("02/01"), self.Duration().Hours(), self.Text)
 }
 
 //"2013-01-18 15:24: learn code-reading gostatic"
