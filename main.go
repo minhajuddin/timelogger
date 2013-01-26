@@ -97,7 +97,5 @@ func printSummary(logs []*Log) {
 }
 
 func roundOffToDate(t time.Time) time.Time {
-	dateString := "20060102"
-	t, _ = time.Parse(dateString, t.Format(dateString))
-	return t
+	return time.Date(t.Year(), t.Month(), t.Day(), 0, 0, 0, 0, t.Location())
 }
