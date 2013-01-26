@@ -1,0 +1,10 @@
+## Filter
+  We need to be able to filter the output by:
+  
+    2. Date
+    3. Task regexp
+    4. Project/Task/Subtask
+
+  We should be able to combine these filters. We should also be able to select 
+  the output independently
+

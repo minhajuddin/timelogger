@@ -68,7 +68,8 @@ Timelogger
 ## Filter
   We need to be able to filter the output by:
   
-    1. Number of lines/or number of tasks
+    1. Number of lines/or number of tasks: Use the -n flag
+        `timelogger -n 33` shows the last 33 tasks
     2. Date
     3. Task regexp
     4. Project/Task/Subtask
