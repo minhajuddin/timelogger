@@ -68,6 +68,7 @@ func filterLogs(logs []*Log, predicate func(*Log) bool) []*Log {
 	return oplogs
 }
 func printLogsForDays(days int) {
+	days = (days - 1)
 	tillDate := time.Now().AddDate(0, 0, -1*days)
 	tillDate = roundOffToDate(tillDate)
 	logs := readLatestLogs(int64(days) * MAX_LOGS_PER_DAY)

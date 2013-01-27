@@ -57,6 +57,9 @@ func parseLine(line string) *Log {
 
 func parseLines(lines []string) []*Log {
 	logs := make([]*Log, 0, 10)
+	if len(lines) < 1 {
+		return logs
+	}
 	//first pass, parse the end times
 	for i := 0; i < len(lines); i++ {
 		//skip empty lines
