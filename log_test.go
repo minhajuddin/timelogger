@@ -1,36 +1,38 @@
 package main
 
 import (
+	"github.com/remogatto/prettytest"
 	"testing"
 	"time"
 )
 
-func assertEqual(t *testing.T, expected, actual interface{}, message string) {
-	if expected != actual {
-		t.Log(message)
-		t.Errorf("Equality assertion failed: %v != %v", expected, actual)
-	}
+//start setup
+type testSuite struct {
+	prettytest.Suite
 }
 
-func TestParse(t *testing.T) {
-	log := parseLine("2013-01-27 18:13: timelogger dev")
+func TestRunner(t *testing.T) {
+	prettytest.RunWithFormatter(
+		t,
+		new(prettytest.TDDFormatter),
+		new(testSuite),
+	)
+}
 
-	if log.Text != "timelogger dev" {
-		t.Error("Unable to parse log text")
-	}
+var l = parseLine("2013-01-27 18:13: timelogger dev")
 
-	if log.Project != "timelogger" {
-		t.Error("Unable to parse project")
-	}
-
-	if log.Task != "dev" {
-		t.Error("Unable to parse task")
-	}
-
-	if log.Subtask != "" {
-		t.Error("Unable to parse subtask")
-	}
-
-	assertEqual(t, time.Date(2013, 01, 27, 18, 13, 0, 0, time.UTC), log.End, "")
-
+func (t *testSuite) TestTextParse() {
+	t.Equal(l.Text, "timelogger dev")
+}
+func (t *testSuite) TestProjectParse() {
+	t.Equal(l.Project, "timelogger")
+}
+func (t *testSuite) TestTaskParse() {
+	t.Equal(l.Task, "dev")
+}
+func (t *testSuite) TestSubtaskParse() {
+	t.Equal(l.Subtask, "")
+}
+func (t *testSuite) TestDateParse() {
+	t.Equal(l.End, time.Date(2013, 01, 27, 18, 13, 0, 0, time.UTC))
 }
