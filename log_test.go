@@ -33,6 +33,17 @@ func (t *testSuite) TestTaskParse() {
 func (t *testSuite) TestSubtaskParse() {
 	t.Equal(l.Subtask, "")
 }
+
 func (t *testSuite) TestDateParse() {
 	t.Equal(l.End, time.Date(2013, 01, 27, 18, 13, 0, 0, time.UTC))
+}
+
+func (t *testSuite) TestParseLines() {
+	logs := parseLines([]string{
+		"2013-01-26 14:34: timelogger warmup",
+		"2013-01-26 14:58: break",
+	})
+
+	t.Equal(len(logs), 1)
+	t.Equal(logs[0].Start, time.Date(2013, 01, 26, 14, 34, 0, 0, time.UTC))
 }
