@@ -4,6 +4,28 @@ import (
 	"time"
 )
 
+type Filterer interface {
+	Filter(LogReaderWriter) []Log
+}
+
+type LineFilter struct {
+	Number int64
+}
+
+func (self *LineFilter) Filter(reader LogReaderWriter) []Log {
+	return reader.Read(self.Number)
+}
+
+func getFilter(n int64) Filterer {
+	if n == 0 {
+		n = 10
+	}
+	return &LineFilter{Number: n}
+}
+
+//========================================
+//========================================
+
 //TODO:
 //	- n number
 //  -since date
@@ -17,20 +39,6 @@ func filterLogs(logs []Log, predicate func(*Log) bool) []Log {
 		}
 	}
 	return oplogs
-}
-
-type Filterer interface {
-	Filter(logs []Log) []Log
-}
-
-type NoFilter struct{}
-
-func (self NoFilter) Filter(logs []Log) []Log {
-	return logs
-}
-
-func getFilter() Filterer {
-	return &NoFilter{}
 }
 
 func readLatestLogs(n int64) []Log {

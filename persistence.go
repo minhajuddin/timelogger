@@ -9,7 +9,7 @@ import (
 )
 
 type LogReaderWriter interface {
-	Read(n int) []Log
+	Read(n int64) []Log
 	Write(log *Log)
 }
 
