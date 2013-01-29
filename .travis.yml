@@ -1,1 +1,3 @@
 language: go
+before_script:
+ - sh -c "go get github.com/remogatto/prettytest"
