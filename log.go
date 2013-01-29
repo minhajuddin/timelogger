@@ -55,8 +55,8 @@ func parseLine(line string) *Log {
 	}
 }
 
-func parseLines(lines []string) []*Log {
-	logs := make([]*Log, 0, 10)
+func parseLines(lines []string) []Log {
+	logs := make([]Log, 0, 10)
 	if len(lines) < 1 {
 		return logs
 	}
@@ -65,7 +65,7 @@ func parseLines(lines []string) []*Log {
 		//skip empty lines
 		//TODO should we treat empty lines like gtimelog?
 		if len(lines[i]) > 0 {
-			logs = append(logs, parseLine(lines[i]))
+			logs = append(logs, *parseLine(lines[i]))
 		}
 	}
 	//second pass, compute the durations
@@ -83,7 +83,7 @@ func parseLines(lines []string) []*Log {
 //this code tries to get the last n lines from the file
 //it is accurate most of the times, sometimes it might not
 //be able to get n lines if the line size is large, in these
-func readLatestLogs(n int64) []*Log {
+func readLatestLogs(n int64) []Log {
 	fd, err := os.Open(TIMELOG_FILE)
 	if err != nil {
 		log.Fatal("Failed to open the timelog file for reading: ", TIMELOG_FILE, err)

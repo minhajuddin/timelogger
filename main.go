@@ -58,18 +58,17 @@ func generateReport(reportType string) {
 	fmt.Println("Generating report:", reportType)
 }
 
-func filterLogs(logs []*Log, predicate func(*Log) bool) []*Log {
-	oplogs := make([]*Log, 0, len(logs))
+func filterLogs(logs []Log, predicate func(*Log) bool) []Log {
+	oplogs := make([]Log, 0, len(logs))
 	for _, l := range logs {
-		if predicate(l) {
+		if predicate(&l) {
 			oplogs = append(oplogs, l)
 		}
 	}
 	return oplogs
 }
 func printLogsForDays(days int) {
-	days = (days - 1)
-	tillDate := time.Now().AddDate(0, 0, -1*days)
+	tillDate := time.Now().AddDate(0, 0, -1*(days-1))
 	tillDate = roundOffToDate(tillDate)
 	logs := readLatestLogs(int64(days) * MAX_LOGS_PER_DAY)
 	logs = filterLogs(logs, func(l *Log) bool { return l.End.After(tillDate) })
@@ -91,7 +90,7 @@ func printLatestLogs(n int64) {
 	printSummary(logs[lindex:])
 }
 
-func printSummary(logs []*Log) {
+func printSummary(logs []Log) {
 	for _, log := range logs {
 		fmt.Println(log.String())
 	}
