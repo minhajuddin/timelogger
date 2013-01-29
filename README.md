@@ -1,5 +1,6 @@
 Timelogger
 ==========
+[![Build Status](https://travis-ci.org/minhajuddin/timelogger.png)](https://travis-ci.org/minhajuddin/timelogger)
 
 ## Logger
 
@@ -80,6 +81,7 @@ Timelogger
 ## Bash helpers
   You can add these in your ~/.bashrc to help with logging
 
+~~~bash
   #shortcut to timelogger
   alias tl='timelogger'
   #to allow editing of your log file from your editor
@@ -90,9 +92,12 @@ Timelogger
   {
     echo "$(date "+%Y-%m-%d %H:%M"): $(tail -1 ~/.timelog.txt | sed -e 's/^[0-9 :-]*//g')" >> ~/.timelog.txt
   }
+~~~
 
 ## Syncing across computers
  Use Dropbox to sync this file across multiple computers
     
+~~~bash
     $ touch $HOME/Dropbox/timelog.txt
     $ ln -s $HOME/Dropbox/timelog.txt $HOME/.timelog.txt
+~~~
