@@ -72,3 +72,11 @@ func parseLines(lines []string) []Log {
 	//cannot compute the summary for the first log entry
 	return logs[1:]
 }
+
+func NewLog(message string) *Log {
+	//this is to stay consistent with the gtimelog format
+	return &Log{
+		Text: strings.Replace(message, "::", "**", 1),
+		End:  time.Now(),
+	}
+}
