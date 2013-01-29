@@ -8,15 +8,23 @@ type Filterer interface {
 	Filter(LogReaderWriter) []Log
 }
 
-type LineFilter struct {
-	Number int64
+func filterLogs(logs []Log, predicate func(*Log) bool) []Log {
+	oplogs := make([]Log, 0, len(logs))
+	for _, l := range logs {
+		if predicate(&l) {
+			oplogs = append(oplogs, l)
+		}
+	}
+	return oplogs
 }
 
-func (self *LineFilter) Filter(reader LogReaderWriter) []Log {
-	return reader.Read(self.Number)
-}
-
-func getFilter(n int64) Filterer {
+//TODO: change all int64 to int
+func getFilter(n int64, days int) Filterer {
+	if days != 0 {
+		date := time.Now().AddDate(0, 0, -1*(int(days)-1))
+		date = roundOffToDate(date)
+		return &DateFilter{Date: date}
+	}
 	if n == 0 {
 		n = 10
 	}
@@ -30,16 +38,6 @@ func getFilter(n int64) Filterer {
 //	- n number
 //  -since date
 //  -grep date
-
-func filterLogs(logs []Log, predicate func(*Log) bool) []Log {
-	oplogs := make([]Log, 0, len(logs))
-	for _, l := range logs {
-		if predicate(&l) {
-			oplogs = append(oplogs, l)
-		}
-	}
-	return oplogs
-}
 
 func readLatestLogs(n int64) []Log {
 	return make([]Log, 10)
@@ -87,6 +85,3 @@ func printLatestLogs(n int64) {
 }
 
 //utility functions
-func roundOffToDate(t time.Time) time.Time {
-	return time.Date(t.Year(), t.Month(), t.Day(), 0, 0, 0, 0, t.Location())
-}

@@ -19,7 +19,7 @@ type TextReaderWriter struct {
 
 const (
 	AVG_LINE_LENGTH  int64 = 50
-	MAX_LOGS_PER_DAY int64 = 20
+	MAX_LOGS_PER_DAY int64 = 40
 )
 
 func (self *TextReaderWriter) Write(log *Log) {

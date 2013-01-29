@@ -7,9 +7,8 @@ import (
 	"strings"
 )
 
-//var days = flag.Int("d", -1, "Prints the logs for the last n days")
-
 var n = flag.Int64("n", 0, "Prints the last n logs, prints 10 lines by default")
+var days = flag.Int("d", 0, "Prints the logs for the last n days")
 var formatterArg = flag.String("f", "plain", "Formatter for the output")
 
 func main() {
@@ -28,7 +27,7 @@ func main() {
 	//create a formatter with this writer
 	formatter := getFormatter(*formatterArg)
 	//filter the logs using the current filter
-	filter := getFilter(*n)
+	filter := getFilter(*n, *days)
 	logs := filter.Filter(logReaderWriter)
 	////pass the query through the formatter
 	formatter.Format(logs, writer)
