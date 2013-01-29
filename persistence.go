@@ -46,12 +46,31 @@ func filterLogs(logs []Log, predicate func(*Log) bool) []Log {
 	return oplogs
 }
 
+func printSummary(logs []Log) {
+}
+
 func printLogsForDays(days int) {
 	tillDate := time.Now().AddDate(0, 0, -1*(days-1))
 	tillDate = roundOffToDate(tillDate)
 	logs := readLatestLogs(int64(days) * MAX_LOGS_PER_DAY)
 	logs = filterLogs(logs, func(l *Log) bool { return l.End.After(tillDate) })
 	printSummary(logs)
+}
+
+func getLatestLogs(n int64) {
+
+	//TODO: this should probably be moved to main.go
+	//this is when no option is given 
+	if n == -1 {
+		n = 10
+	}
+	logs := readLatestLogs(n)
+	lindex := int64(len(logs)) - n
+	//if we have less lines than the lineCount, show all the lines
+	if lindex < 0 {
+		lindex = 0
+	}
+	printSummary(logs[lindex:])
 }
 
 func printLatestLogs(n int64) {

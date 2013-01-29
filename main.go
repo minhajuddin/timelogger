@@ -6,26 +6,36 @@ import (
 	"flag"
 	"fmt"
 	"os"
-	"strings"
+	_ "strings"
 	"time"
 )
 
 func main() {
-	var report = flag.String("report", "none", "Type of report you want to generate, options are full, projects ..")
-	var days = flag.Int("d", -1, "Prints the logs for the last n days")
-	var lineCount = flag.Int64("n", -1, "Prints the last n logs, prints 10 lines by default")
-	flag.Parse()
-	//if report is none it means we are logging a task
-	switch {
-	case len(os.Args) == 1 || *lineCount != -1:
-		printLatestLogs(*lineCount)
-	case *days != -1:
-		printLogsForDays(*days)
-	case *report == "none":
-		logTask(strings.Join(os.Args[1:], " "))
-	default:
-		generateReport(*report)
-	}
+	formatterArg := flag.String("f", "plain", "Formatter for the output")
+	//var days = flag.Int("d", -1, "Prints the logs for the last n days")
+	//var lineCount = flag.Int64("n", -1, "Prints the last n logs, prints 10 lines by default")
+	//flag.Parse()
+
+	//create a io.Writer
+	//create a formatter with this writer
+	formatter := getFormatter(*formatterArg)
+	//run the query to get logs
+	//TODO: remove hardcoded number
+	logs := readLatestLogs(10)
+	//pass the query through the formatter
+	formatter.Format(logs, os.Stdout)
+
+	////if report is none it means we are logging a task
+	//switch {
+	//case len(os.Args) == 1 || *lineCount != -1:
+	//printLatestLogs(*lineCount)
+	//case *days != -1:
+	//printLogsForDays(*days)
+	//case *report == "none":
+	//logTask(strings.Join(os.Args[1:], " "))
+	//default:
+	//generateReport(*report)
+	//}
 }
 
 //TODO: To be moved to a better place
