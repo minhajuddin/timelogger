@@ -2,9 +2,6 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
-	"log"
-	"os"
 	"strings"
 	"time"
 )
@@ -74,27 +71,4 @@ func parseLines(lines []string) []Log {
 	}
 	//cannot compute the summary for the first log entry
 	return logs[1:]
-}
-
-//TODO Need the ability to seek further back if we have
-//lesser lines than the number needed
-//This method may return more logs than you need
-//filter appropriately
-//this code tries to get the last n lines from the file
-//it is accurate most of the times, sometimes it might not
-//be able to get n lines if the line size is large, in these
-func readLatestLogs(n int64) []Log {
-	fd, err := os.Open(TIMELOG_FILE)
-	if err != nil {
-		log.Fatal("Failed to open the timelog file for reading: ", TIMELOG_FILE, err)
-	}
-	defer fd.Close()
-
-	//seek to these many lines from the back of the file
-	_, _ = fd.Seek(-(AVG_LINE_LENGTH * n), 2)
-	bytes, _ := ioutil.ReadAll(fd)
-	lines := strings.Split(string(bytes), "\n")
-	//we want to skip the first line as it might be read from the middle
-	lines = lines[1:]
-	return parseLines(lines)
 }

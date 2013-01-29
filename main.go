@@ -1,22 +1,13 @@
 package main
 
+//Contains code related to args parsing and dispatching
+
 import (
 	"flag"
 	"fmt"
-	"log"
 	"os"
-	"path"
 	"strings"
 	"time"
-)
-
-var (
-	TIMELOG_FILE = path.Join(os.Getenv("HOME"), ".timelog.txt")
-)
-
-const (
-	AVG_LINE_LENGTH  int64 = 50
-	MAX_LOGS_PER_DAY int64 = 20
 )
 
 func main() {
@@ -31,71 +22,18 @@ func main() {
 	case *days != -1:
 		printLogsForDays(*days)
 	case *report == "none":
-		logTask()
+		logTask(strings.Join(os.Args[1:], " "))
 	default:
 		generateReport(*report)
 	}
 }
 
-func logTask() {
-	logFile, err := os.OpenFile(TIMELOG_FILE, os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0600)
-	if err != nil {
-		log.Fatal("Unable to open timelog file:", err)
-	}
-	defer logFile.Close()
-
-	msg := strings.Join(os.Args[1:], " ")
-	//this is to stay consistent with the gtimelog format
-	msg = strings.Replace(msg, "::", "**", 1)
-	op := time.Now().Format("2006-01-02 15:04: ") + msg + "\n"
-	_, err = logFile.WriteString(op)
-	if err != nil {
-		log.Fatal("Failed to write:", err)
-	}
-}
-
+//TODO: To be moved to a better place
 func generateReport(reportType string) {
 	fmt.Println("Generating report:", reportType)
 }
 
-func filterLogs(logs []Log, predicate func(*Log) bool) []Log {
-	oplogs := make([]Log, 0, len(logs))
-	for _, l := range logs {
-		if predicate(&l) {
-			oplogs = append(oplogs, l)
-		}
-	}
-	return oplogs
-}
-func printLogsForDays(days int) {
-	tillDate := time.Now().AddDate(0, 0, -1*(days-1))
-	tillDate = roundOffToDate(tillDate)
-	logs := readLatestLogs(int64(days) * MAX_LOGS_PER_DAY)
-	logs = filterLogs(logs, func(l *Log) bool { return l.End.After(tillDate) })
-	printSummary(logs)
-}
-
-func printLatestLogs(n int64) {
-
-	//this is when no option is given 
-	if n == -1 {
-		n = 10
-	}
-	logs := readLatestLogs(n)
-	lindex := int64(len(logs)) - n
-	//if we have less lines than the lineCount, show all the lines
-	if lindex < 0 {
-		lindex = 0
-	}
-	printSummary(logs[lindex:])
-}
-
-func printSummary(logs []Log) {
-	for _, log := range logs {
-		fmt.Println(log.String())
-	}
-}
-
+//utility functions
 func roundOffToDate(t time.Time) time.Time {
 	return time.Date(t.Year(), t.Month(), t.Day(), 0, 0, 0, 0, t.Location())
 }
