@@ -19,12 +19,15 @@ func filterLogs(logs []Log, predicate func(*Log) bool) []Log {
 }
 
 //TODO:
-//	- n number
-//  -since date
 //  -grep date
 
 //TODO: change all int64 to int
-func getFilter(n int64, days int) Filterer {
+func getFilter(n int64, days int, since string) Filterer {
+	if since != "" {
+		date, err := time.Parse("2006-01-02", since)
+		handleError(err, "Incorrect date format. Should be input as 2012-02-22")
+		return &DateFilter{Date: date}
+	}
 	if days != 0 {
 		date := time.Now().AddDate(0, 0, -1*(int(days)-1))
 		date = roundOffToDate(date)
