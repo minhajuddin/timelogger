@@ -34,39 +34,39 @@ Timelogger
      spent time working on something. e.g. At the end of working on a coding
      session on timelogger you would run `gl timelogger dev`
 
-## Statistics / Analyses
+## Statistics / Analysis
   1. Projects, dates and hours
 
-      Project | Time spent in hours | Date
-      TL      | 8.33                | 2012-10-23
-      TL      | 6.33                | 2012-10-24
-      Learn   | 8.3                 | 2012-10-24
-      Break   | 3                   | 2012-10-25
+        Project | Time spent in hours | Date
+        TL      | 8.33                | 2012-10-23
+        TL      | 6.33                | 2012-10-24
+        Learn   | 8.3                 | 2012-10-24
+        Break   | 3                   | 2012-10-25
 
   2. Projects, tasks, hours and dates
       
-      Project | Task         | Time spent in hours | Date
-      TL      | dev          | 5.33                | 2012-10-23
-      TL      | dev          | 3.33                | 2012-10-24
-      TL      | design       | 3.33                | 2012-10-24
-      Learn   | code-reading | 8.3                 | 2012-10-25
+        Project | Task         | Time spent in hours | Date
+        TL      | dev          | 5.33                | 2012-10-23
+        TL      | dev          | 3.33                | 2012-10-24
+        TL      | design       | 3.33                | 2012-10-24
+        Learn   | code-reading | 8.3                 | 2012-10-25
 
   3. Projects, tasks and hours
 
-      Project | Task         | Time spent in hours
-      TL      | dev          | 10.33
-      TL      | design       | 3.33
-      Learn   | code-reading | 8.3
-      Break   | lunch        | 3
+        Project | Task         | Time spent in hours
+        TL      | dev          | 10.33
+        TL      | design       | 3.33
+        Learn   | code-reading | 8.3
+        Break   | lunch        | 3
 
   4. Projects and hours
 
-      Project | Time spent in hours
-      TL      | 13.33
-      Learn   | 8.3
-      Break   | 3
+        Project | Time spent in hours
+        TL      | 13.33
+        Learn   | 8.3
+        Break   | 3
 
-## Filter
+## Filters
   We need to be able to filter the output by:
   
     1. Number of lines/or number of tasks: Use the -n flag
