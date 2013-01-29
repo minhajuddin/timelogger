@@ -5,5 +5,7 @@ type LineFilter struct {
 }
 
 func (self *LineFilter) Filter(reader LogReaderWriter) []Log {
-	return reader.Read(self.Number)
+	logs := reader.Read(self.Number)
+	lindex := int64(len(logs)) - self.Number
+	return logs[lindex:]
 }
