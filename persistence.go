@@ -36,6 +36,21 @@ func logTask(msg string) {
 	}
 }
 
+////if report is none it means we are logging a task
+//switch {
+//case len(os.Args) == 1 || *lineCount != -1:
+//printLatestLogs(*lineCount)
+//case *days != -1:
+//printLogsForDays(*days)
+//case *report == "none":
+//logTask(strings.Join(os.Args[1:], " "))
+//default:
+//generateReport(*report)
+//}
+func getLogs() []Log {
+	return readLatestLogs(10)
+}
+
 func filterLogs(logs []Log, predicate func(*Log) bool) []Log {
 	oplogs := make([]Log, 0, len(logs))
 	for _, l := range logs {
@@ -109,4 +124,9 @@ func readLatestLogs(n int64) []Log {
 	//we want to skip the first line as it might be read from the middle
 	lines = lines[1:]
 	return parseLines(lines)
+}
+
+//utility functions
+func roundOffToDate(t time.Time) time.Time {
+	return time.Date(t.Year(), t.Month(), t.Day(), 0, 0, 0, 0, t.Location())
 }
