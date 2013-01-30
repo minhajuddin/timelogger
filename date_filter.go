@@ -10,7 +10,7 @@ type DateFilter struct {
 
 func (self *DateFilter) Days() int64 {
 	today := roundOffToDate(time.Now())
-	return roundFloat(today.Sub(self.Date).Hours() / 24)
+	return roundFloat(today.Sub(self.Date).Hours()/24) + 1
 }
 
 func (self *DateFilter) Filter(reader LogReaderWriter) []Log {

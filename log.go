@@ -43,6 +43,8 @@ func parseLine(line string) *Log {
 		project = projectTokens[0]
 	}
 	t, _ := time.Parse("2006-01-02 15:04", timeToken)
+	//convert it to local time
+	t = time.Date(t.Year(), t.Month(), t.Day(), t.Hour(), t.Minute(), 0, 0, time.Local)
 	return &Log{
 		Text:    projectToken,
 		End:     t,
