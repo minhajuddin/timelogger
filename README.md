@@ -34,6 +34,8 @@ Timelogger
      spent time working on something. e.g. At the end of working on a coding
      session on timelogger you would run `gl timelogger dev`
 
+  6. Pseudo projects. e.g. `gl badminton` should be logged under `excercise` project?
+
 ## Statistics / Analysis
   1. Projects, dates and hours
 

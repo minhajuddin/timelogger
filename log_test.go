@@ -35,7 +35,7 @@ func (t *testSuite) TestSubtaskParse() {
 }
 
 func (t *testSuite) TestDateParse() {
-	t.Equal(l.End, time.Date(2013, 01, 27, 18, 13, 0, 0, time.UTC))
+	t.Equal(l.End, time.Date(2013, 01, 27, 18, 13, 0, 0, time.Local))
 }
 
 func (t *testSuite) TestParseLines() {
@@ -45,5 +45,5 @@ func (t *testSuite) TestParseLines() {
 	})
 
 	t.Equal(len(logs), 1)
-	t.Equal(logs[0].Start, time.Date(2013, 01, 26, 14, 34, 0, 0, time.UTC))
+	t.Equal(logs[0].Start, time.Date(2013, 01, 26, 14, 34, 0, 0, time.Local))
 }
