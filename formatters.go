@@ -14,7 +14,7 @@ type PlainFormatter struct{}
 
 func (self PlainFormatter) Format(logs []Log, writer io.Writer) {
 	for _, log := range logs {
-		fmt.Println(log.String())
+		fmt.Printf("\t%2d:%02d - %s\n", int(log.Duration().Hours()), int(log.Duration().Minutes())%60, log.Text)
 	}
 }
 
