@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"io"
+	"sort"
 	"time"
 )
 
@@ -21,13 +22,18 @@ type ProjectSummaryLog struct {
 	Date     time.Time
 }
 
+type ProjectSummaryLogs []ProjectSummaryLog
+
+func (s ProjectSummaryLogs) Len() int           { return len(s) }
+func (s ProjectSummaryLogs) Less(i, j int) bool { return s[j].Date.After(s[i].Date) }
+func (s ProjectSummaryLogs) Swap(i, j int)      { s[i], s[j] = s[j], s[i] }
+
 func projectSummaryLogHash(l *Log) string {
 	return l.End.Format("20060102:") + l.Project
 }
 
 func (self ProjectSummaryFormatter) Format(logs []Log, writer io.Writer) {
 	summary := make(map[string]*ProjectSummaryLog)
-
 	//map of date:project
 	for _, log := range logs {
 		hash := projectSummaryLogHash(&log)
@@ -42,8 +48,16 @@ func (self ProjectSummaryFormatter) Format(logs []Log, writer io.Writer) {
 		p.Duration += log.Duration()
 	}
 
-	//TODO: add sorting
+	pslogs := make(ProjectSummaryLogs, 0, len(summary))
+
 	for _, p := range summary {
+		pslogs = append(pslogs, *p)
+	}
+
+	sort.Sort(pslogs)
+
+	//TODO: add sorting
+	for _, p := range pslogs {
 		fmt.Printf("\t%s\t%5.2f - %s\n", p.Date.Format("2006-01-02"), p.Duration.Hours(), p.Project)
 	}
 
