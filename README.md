@@ -1,6 +1,6 @@
 Timelogger
 ==========
-[![Build Status](https://travis-ci.org/minhajuddin/timelogger.png)](https://travis-ci.org/minhajuddin/timelogger)
+[![Build Status](https://api.travis-ci.org/minhajuddin/timelogger.png?branch=master)](https://travis-ci.org/minhajuddin/timelogger)
 
 ## Logger
 
