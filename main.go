@@ -11,10 +11,11 @@ var n = flag.Int64("n", 0, "Prints the last n logs, prints 10 lines by default")
 var days = flag.Int("d", 0, "Prints the logs for the last n days")
 var since = flag.String("since", "", "Prints the logs from the date since. e.g. --since=2012-02-22")
 var formatterArg = flag.String("f", "plain", "Formatter for the output")
+var timelogPath = flag.String("p", path.Join(os.Getenv("HOME"), ".timelog.txt"), "Path of the timelog file")
 
 func main() {
 	flag.Parse()
-	logReaderWriter := &TextReaderWriter{FilePath: path.Join(os.Getenv("HOME"), ".timelog.txt")}
+	logReaderWriter := &TextReaderWriter{FilePath: *timelogPath}
 
 	//if no flags were passed write a log
 	if noFlags() && len(os.Args) > 1 {
